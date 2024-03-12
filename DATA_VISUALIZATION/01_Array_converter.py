@@ -43,6 +43,6 @@ else:
     print("Original Array:")
     for row in array:
         print(row)
-    print("\nArray with New n*n Dimension:")
+    print("\nArray with New m*n Dimension:")
     for row in result:
         print(row)
