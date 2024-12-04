@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Management</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      text-align: center;
+    }
+    input, button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .hidden {
+      display: none;
+    }
+    #contact-list {
+      list-style: none;
+      padding: 0;
+    }
+    #contact-list li {
+      background-color: #f9f9f9;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .btn-edit, .btn-delete {
+      margin-left: 10px;
+      cursor: pointer;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+    .btn-edit {
+      background-color: #2196F3;
+    }
+    .btn-delete {
+      background-color: #f44336;
+    }
+  </style>
+</head>
+<body>
+  <div id="app" class="container">
+    <!-- Login Page -->
+    <div id="login-page">
+      <h2>Login</h2>
+      <input type="text" id="username" placeholder="Username" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <button id="login-btn">Login</button>
+    </div>
+
+    <!-- Contacts Management Page -->
+    <div id="contact-page" class="hidden">
+      <h2>Manage Contacts</h2>
+      <input type="text" id="contact-name" placeholder="Contact Name" required>
+      <input type="text" id="contact-phone" placeholder="Phone Number" required>
+      <input type="email" id="contact-email" placeholder="Email">
+      <button id="add-contact-btn">Add Contact</button>
+
+      <ul id="contact-list"></ul>
+    </div>
+  </div>
+
+  <script>
+    const users = [
+      { username: 'user1', password: 'pass1' },
+      { username: 'user2', password: 'pass2' },
+      { username: 'user3', password: 'pass3' },
+      { username: 'user4', password: 'pass4' },
+      { username: 'user5', password: 'pass5' },
+    ];
+
+    let currentUser = null;
+
+    // DOM Elements
+    const loginPage = document.getElementById('login-page');
+    const contactPage = document.getElementById('contact-page');
+    const loginBtn = document.getElementById('login-btn');
+    const addContactBtn = document.getElementById('add-contact-btn');
+    const contactList = document.getElementById('contact-list');
+    const contactNameInput = document.getElementById('contact-name');
+    const contactPhoneInput = document.getElementById('contact-phone');
+    const contactEmailInput = document.getElementById('contact-email');
+
+    // Event Listener for Login
+    loginBtn.addEventListener('click', () => {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const user = users.find(user => user.username === username && user.password === password);
+
+      if (user) {
+        currentUser = user.username;
+        showContactPage();
+      } else {
+        alert('Invalid credentials');
+      }
+    });
+
+    // Show Contacts Page
+    function showContactPage() {
+      loginPage.classList.add('hidden');
+      contactPage.classList.remove('hidden');
+      loadContacts();
+    }
+
+    // Load contacts from LocalStorage
+    function loadContacts() {
+      const contacts = JSON.parse(localStorage.getItem(currentUser + '-contacts')) || [];
+      contactList.innerHTML = '';
+      contacts.forEach((contact, index) => {
+        const contactItem = document.createElement('li');
+        contactItem.innerHTML = `
+          ${contact.name} - ${contact.phone} (${contact.email || 'No Email'})
+          <button class="btn-edit" onclick="editContact(${index})">Edit</button>
+          <button class="btn-delete" onclick="deleteContact(${index})">Delete</button>
+        `;
+        contactList.appendChild(contactItem);
+      });
+    }
+
+    // Add Contact
+    addContactBtn.addEventListener('click', () => {
+      const name = contactNameInput.value;
+      const phone = contactPhoneInput.value;
+      const email = contactEmailInput.value;
+
+      if (name && phone) {
+        const contacts = JSON.parse(localStorage.getItem(currentUser + '-contacts')) || [];
+        contacts.push({ name, phone, email });
+        localStorage.setItem(currentUser + '-contacts', JSON.stringify(contacts));
+        loadContacts();
+        contactNameInput.value = '';
+        contactPhoneInput.value = '';
+        contactEmailInput.value = '';
+      } else {
+        alert('Please provide name and phone number.');
+      }
+    });
+
+    // Edit Contact
+    window.editContact = function(index) {
+      const contacts = JSON.parse(localStorage.getItem(currentUser + '-contacts'));
+      const contact = contacts[index];
+
+      contactNameInput.value = contact.name;
+      contactPhoneInput.value = contact.phone;
+      contactEmailInput.value = contact.email;
+
+      // Update contact
+      addContactBtn.textContent = 'Update Contact';
+      addContactBtn.onclick = () => {
+        contact.name = contactNameInput.value;
+        contact.phone = contactPhoneInput.value;
+        contact.email = contactEmailInput.value;
+        contacts[index] = contact;
+        localStorage.setItem(currentUser + '-contacts', JSON.stringify(contacts));
+        loadContacts();
+        resetForm();
+      };
+    };
+
+    // Delete Contact
+    window.deleteContact = function(index) {
+      const contacts = JSON.parse(localStorage.getItem(currentUser + '-contacts'));
+      contacts.splice(index, 1);
+      localStorage.setItem(currentUser + '-contacts', JSON.stringify(contacts));
+      loadContacts();
+    };
+
+    // Reset form after adding/updating
+    function resetForm() {
+      contactNameInput.value = '';
+      contactPhoneInput.value = '';
+      contactEmailInput.value = '';
+      addContactBtn.textContent = 'Add Contact';
+      addContactBtn.onclick = addContact;
+    }
+  </script>
+</body>
+</html>

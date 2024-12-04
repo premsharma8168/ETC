@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Income Tax Calculator 2024-25</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .container:hover {
+            transform: translateY(-10px);
+        }
+
+        h1 {
+            text-align: center;
+            color: #444;
+            margin-bottom: 20px;
+            font-size: 2.2em;
+            letter-spacing: 1px;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 8px;
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #333;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border 0.3s ease;
+        }
+
+        input[type="number"]:focus {
+            border-color: #66a6ff;
+            outline: none;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #444;
+            padding: 10px;
+            background-color: #f0f8ff;
+            border: 2px solid #66a6ff;
+            border-radius: 8px;
+        }
+
+        .result strong {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Income Tax Calculator</h1>
+
+    <label for="income">Enter your Income in Rupees:</label>
+    <input type="number" id="income" placeholder="Enter your income">
+
+    <button onclick="calculateTax()">Calculate Tax</button>
+
+    <div class="result" id="result"></div>
+</div>
+
+<script>
+    function calculateTax() {
+        let income = parseInt(document.getElementById("income").value);
+        let tax = 0;
+        let taxRate = "";
+        let grossSalary = income;
+
+        if (income <= 300000) {
+            taxRate = "0%";
+        } else if (income >= 300001 && income <= 700000) {
+            taxRate = "5%";
+            tax = income * 0.05;
+        } else if (income >= 700001 && income <= 1000000) {
+            taxRate = "10%";
+            tax = income * 0.1;
+        } else if (income >= 1000001 && income <= 1200000) {
+            taxRate = "15%";
+            tax = income * 0.15;
+        } else if (income >= 1200001 && income <= 1500000) {
+            taxRate = "20%";
+            tax = income * 0.2;
+        } else {
+            taxRate = "30%";
+            tax = income * 0.3;
+        }
+
+        grossSalary = income - tax;
+
+        document.getElementById("result").innerHTML = `
+            <p>You have to pay <strong>${taxRate}</strong> tax.</p>
+            <p>Your tax amount is: <strong>₹${tax}</strong></p>
+            <p>Your final gross salary is: <strong>₹${grossSalary}</strong></p>
+        `;
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ludo Game</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f8f9fa;
+            margin: 0;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(15, 1fr);
+            grid-template-rows: repeat(15, 1fr);
+            width: 90vmin;
+            height: 90vmin;
+            gap: 1px;
+            position: relative;
+        }
+
+        .cell {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+            border: 1px solid #ddd;
+        }
+
+        .home { background-color: #f2f2f2; }
+
+        /* Player zones */
+        .red { background-color: #ff4d4d; }
+        .green { background-color: #00cc44; }
+        .blue { background-color: #3399ff; }
+        .yellow { background-color: #ffcc33; }
+
+        /* Safe spots */
+        .safe {
+            background-color: #ffeb3b;
+            border: 2px solid black;
+            border-radius: 50%;
+        }
+
+        .token {
+            border-radius: 50%;
+            width: 80%;
+            height: 80%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+        }
+
+        .red-token { background-color: #ff3333; }
+        .green-token { background-color: #00cc44; }
+        .blue-token { background-color: #3399ff; }
+        .yellow-token { background-color: #ffcc33; }
+
+        /* Dice */
+        .dice-container {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .dice {
+            font-size: 2rem;
+            margin: 10px;
+            background-color: #f2f2f2;
+            border: 2px solid #333;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            background-color: grey;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .board {
+                width: 80vmin;
+                height: 80vmin;
+            }
+
+            .dice {
+                font-size: 1.5rem;
+            }
+
+            button {
+                font-size: 0.9rem;
+            }
+        }
+
+        .center { background-color: #ffff66; }
+    </style>
+</head>
+<body>
+
+    <div class="board" id="board">
+        <!-- The board is divided into cells -->
+        <!-- The cells will be generated programmatically for each player's home, track, and safe spots -->
+    </div>
+
+    <div class="dice-container">
+        <div class="dice" id="dice">Roll: 0</div>
+        <button id="rollDiceBtn" onclick="rollDice()">Roll Dice</button>
+        <div id="status">Turn: Player 1 (Red)</div>
+    </div>
+
+    <script>
+        // Initial Setup
+        const board = document.getElementById('board');
+        const diceDisplay = document.getElementById('dice');
+        const statusDisplay = document.getElementById('status');
+        const rollDiceBtn = document.getElementById('rollDiceBtn');
+        
+        const playerColors = ['red', 'green', 'yellow', 'blue'];
+        let currentPlayer = 0; // Start with Player 1 (Red)
+        let diceValue = 0;
+
+        // Function to create the Ludo board
+        function createBoard() {
+            for (let i = 0; i < 15 * 15; i++) {
+                const cell = document.createElement('div');
+                cell.classList.add('cell');
+
+                // Define player zones
+                if (i < 6 * 15 && i % 15 < 6) cell.classList.add('red');
+                else if (i >= 9 * 15 && i % 15 < 6) cell.classList.add('blue');
+                else if (i < 6 * 15 && i % 15 >= 9) cell.classList.add('yellow');
+                else if (i >= 9 * 15 && i % 15 >= 9) cell.classList.add('green');
+                
+                // Safe spots (for simplicity, we'll add a few safe zones)
+                if ([7 * 15 + 7].includes(i)) {
+                    cell.classList.add('center');
+                }
+                
+                cell.id = `cell-${i}`;
+                board.appendChild(cell);
+            }
+        }
+
+        // Function to roll the dice
+        function rollDice() {
+            diceValue = Math.floor(Math.random() * 6) + 1;
+            diceDisplay.textContent = `Roll: ${diceValue}`;
+            statusDisplay.textContent = `Turn: Player ${currentPlayer + 1} (${playerColors[currentPlayer].toUpperCase()}) - Move token!`;
+            rollDiceBtn.disabled = true;
+            // You would then allow the player to select one of their tokens to move
+        }
+
+        // Move to the next player
+        function nextPlayer() {
+            currentPlayer = (currentPlayer + 1) % 4;
+            statusDisplay.textContent = `Turn: Player ${currentPlayer + 1} (${playerColors[currentPlayer].toUpperCase()})`;
+            rollDiceBtn.disabled = false;
+        }
+
+        // Start the game by creating the board
+        createBoard();
+
+    </script>
+</body>
+</html>

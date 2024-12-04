@@ -1,0 +1,177 @@
+Java Complete Theory Notes
+1. Introduction to Java
+Java is a high-level, class-based, object-oriented programming language designed to minimize dependencies and provide platform independence.
+It is known for its "Write Once, Run Anywhere" capability, allowing Java code to run on any platform that supports the Java Virtual Machine (JVM).
+Developer: James Gosling created Java at Sun Microsystems, first released in 1995.
+2. Features of Java
+Platform Independence: Java bytecode runs on any device with a JVM.
+Object-Oriented: Java focuses on objects as the core of programs.
+Secure: JVM provides security mechanisms, such as bytecode verification and sandboxing.
+Robust: Java has strong memory management and exception handling.
+Multithreaded: Java natively supports multithreading.
+3. Java Development Tools
+JDK (Java Development Kit): Contains development tools like a compiler and debugger.
+JRE (Java Runtime Environment): Provides the JVM, libraries, and other resources to run applications.
+JVM (Java Virtual Machine): Executes Java bytecode and provides cross-platform capabilities.
+4. Basic Syntax and Structure
+Class Structure:
+java
+Copy code
+public class MyClass {
+    // Fields/Attributes
+    int attribute;
+    
+    // Constructor
+    public MyClass() {
+        attribute = 10;
+    }
+    
+    // Method
+    public void display() {
+        System.out.println("Attribute: " + attribute);
+    }
+    
+    // Main Method
+    public static void main(String[] args) {
+        MyClass obj = new MyClass();
+        obj.display();
+    }
+}
+Entry Point: The main method (public static void main(String[] args)) is the entry point of any Java application.
+5. Data Types and Variables
+Primitive Data Types: byte, short, int, long, float, double, char, boolean.
+Reference Data Types: Includes objects and arrays.
+Variables:
+Local Variables: Declared within a method.
+Instance Variables: Non-static fields declared within a class.
+Static Variables: Fields shared across all instances of a class.
+6. Control Flow Statements
+If-else Statement:
+java
+Copy code
+if (condition) {
+    // Code
+} else {
+    // Code
+}
+Switch Statement:
+java
+Copy code
+switch (variable) {
+    case value1:
+        // Code
+        break;
+    case value2:
+        // Code
+        break;
+    default:
+        // Code
+}
+Loops:
+For Loop: for (initialization; condition; update) {...}
+While Loop: while (condition) {...}
+Do-While Loop: do {...} while (condition);
+7. Object-Oriented Programming (OOP) Concepts
+Class: Blueprint for creating objects.
+Object: Instance of a class.
+Inheritance: Mechanism where a subclass inherits the fields and methods of a superclass.
+Polymorphism: Allows methods to perform different tasks based on the object calling them.
+Encapsulation: Bundles data and methods into a single unit.
+Abstraction: Hides internal implementation details from users.
+8. Constructors
+A constructor is a special method called when an object is instantiated, and it initializes the object’s state.
+Default Constructor: No arguments; assigns default values.
+Parameterized Constructor: Accepts parameters to initialize instance variables.
+Constructor Overloading: Multiple constructors with different parameter lists.
+9. Inheritance
+Single Inheritance: A class inherits another class.
+Multiple Inheritance: Not directly supported in Java but can be implemented via interfaces.
+Syntax:
+java
+Copy code
+class BaseClass {
+    // Base class code
+}
+class DerivedClass extends BaseClass {
+    // Derived class code
+}
+10. Polymorphism
+Compile-time Polymorphism (Method Overloading): Methods with the same name but different parameters.
+Run-time Polymorphism (Method Overriding): Subclass provides a specific implementation of a method declared in its superclass.
+java
+Copy code
+class Animal {
+    void sound() {
+        System.out.println("Animal makes sound");
+    }
+}
+class Dog extends Animal {
+    void sound() {
+        System.out.println("Dog barks");
+    }
+}
+11. Abstraction
+Abstract Class: Declared with abstract keyword; cannot be instantiated.
+Abstract Method: Method without a body, implemented in subclasses.
+java
+Copy code
+abstract class Shape {
+    abstract void draw();
+}
+class Circle extends Shape {
+    void draw() {
+        System.out.println("Drawing Circle");
+    }
+}
+12. Encapsulation
+Using private access modifiers and getter/setter methods to restrict and control access.
+java
+Copy code
+class Person {
+    private String name;
+    
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+13. Access Modifiers
+Private: Accessible only within the class.
+Default: Accessible within the package.
+Protected: Accessible within the package and subclasses.
+Public: Accessible from any class.
+14. Final Keyword
+Final Variable: Constant, cannot be modified.
+Final Method: Cannot be overridden by subclasses.
+Final Class: Cannot be inherited.
+java
+Copy code
+final class Constants {
+    final int VALUE = 100;
+}
+15. Exception Handling
+Try-Catch Block: Handles runtime exceptions.
+java
+Copy code
+try {
+    // Code that might throw an exception
+} catch (ExceptionType e) {
+    // Handle exception
+}
+Finally Block: Executes regardless of exceptions.
+Throw Keyword: Used to manually throw an exception.
+16. Multithreading
+Thread: A lightweight process for multitasking.
+Thread Creation: Extend the Thread class or implement Runnable interface.
+Thread Synchronization: Ensures thread safety when multiple threads access shared resources.
+java
+Copy code
+class MyThread extends Thread {
+    public void run() {
+        System.out.println("Thread is running");
+    }
+}
+MyThread t1 = new MyThread();
+t1.start();
